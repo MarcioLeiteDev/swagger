@@ -1,0 +1,801 @@
+openapi: 3.0.3
+info:
+  title: API QUERO MAIS
+  description: Documentação API QUERO MAIS
+  version: 1.0.1
+
+servers:
+  - url: "https://qm.capitalcbank.com/"
+    description: "Produção"
+  - url: "http://127.0.0.1:9090/"
+    description: "Local"
+
+tags:
+  - name: LOGS
+    description: Loggin
+
+  - name: FGTS
+    description: fgts
+
+paths:
+  /log:
+    post:
+      tags:
+        - LOGS
+      summary: loggin
+
+      description: loggin
+
+      requestBody:
+        $ref: "#/components/requestBodies/Login"
+
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessLog"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorLog"
+
+  /fgts-simular-saldo:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-simular-saldo
+
+      description: fgts simular saldo
+
+      requestBody:
+        $ref: "#/components/requestBodies/SimularSaldo"
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              example:
+                status: OK
+                data:
+                  - status: Erro
+                    convenio: string
+                    type: string
+                    convenioDescricao: string
+                    aviso: string
+
+                  - status: SUCESSO
+                    convenio: integer
+                    convenioDescricao: string
+                    cpf: integer
+                    nascimento: date-time
+                    dataSaldo: date-time
+                    saldoDesconsiderado: false
+                    listaPeriodoSaque:
+                      - numeroParcela: integer
+                        dataVencimento: date-time
+                        valorParcela: integer
+                    tipoSimulacao: string
+                    listaCondicaoCredito:
+                      convenioCod: integer
+                      convenio: null
+                      produtoCod: null
+                      produto: null
+                      valorSolicitado: 0
+                      valorPrincipal: 0
+                      valorCliente: 0
+                      valorBruto: 0
+                      valorIOF: 0
+                      taxaCETAM: 0
+                      taxaCETAA: 0
+                      taxaAPAM: 0
+                      taxaAPAA: 0
+                      taxaCLAM: 0
+                      taxaCLAA: 0
+                      quantidadeParcelas: 0
+                      listaParcelas: null
+                      observacao: string
+                    simId: integer
+                    aviso: "OK"
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-simular-saldo-unico:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-simular-saldo
+
+      description: fgts simular saldo
+
+      requestBody:
+        $ref: "#/components/requestBodies/SimularSaldo"
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              example:
+                status: OK
+                data:
+                  - status: SUCESSO
+                    convenio: integer
+                    convenioDescricao: string
+                    cpf: integer
+                    nascimento: date-time
+                    dataSaldo: date-time
+                    saldoDesconsiderado: false
+                    listaPeriodoSaque:
+                      - numeroParcela: integer
+                        dataVencimento: date-time
+                        valorParcela: integer
+                    tipoSimulacao: string
+                    listaCondicaoCredito:
+                      convenioCod: integer
+                      convenio: null
+                      produtoCod: null
+                      produto: null
+                      valorSolicitado: 0
+                      valorPrincipal: 0
+                      valorCliente: 0
+                      valorBruto: 0
+                      valorIOF: 0
+                      taxaCETAM: 0
+                      taxaCETAA: 0
+                      taxaAPAM: 0
+                      taxaAPAA: 0
+                      taxaCLAM: 0
+                      taxaCLAA: 0
+                      quantidadeParcelas: 0
+                      listaParcelas: null
+                      observacao: string
+                    simId: integer
+                    aviso: "OK"
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-lista-proposta:
+    post:
+      tags:
+        - FGTS
+
+      parameters:
+        - $ref: "#/components/parameters/ApiKey"
+
+      summary: Retorna informações da proposta
+      responses:
+        200:
+          description: Sucesso
+          content:
+            application/json:
+              example:
+                dados:
+                  - NumeroProposta: integer
+                    NumeroOperacao: integer
+                    UsuarioProposta: integer
+                    LoginDigitador: integer
+                    Cliente:
+                      NomeCliente: string
+                      CPF: integer
+                      Matricula: integer
+                      PIS: integer
+                      CNPJ: integer
+                    CondicoesCredito:
+                      DataBase: date
+                      Data1Vencimento: date
+                      ValorSolicitado: integer
+                      ValorParcela: integer
+                      ValorPrincipal: integer
+                      ValorBruto: integer
+                      ValorIOF: integer
+                      QuantidadeParcelas: integer
+                    Esteira:
+                      Codigo: integer
+                      Descricao: string
+                      SituacaoEsteira: string
+                      UltimaAtividade:
+                        Numero: integer
+                        Descricao: string
+                        DescricaoExterna: string
+                        Data: date
+                        Hora: hour
+                        NumeroAlcada: integer
+                        NumeroFase: integer
+                        ProcessoAlteracaoExterna: string
+                        Motivos: string
+                      GrupoDecisao:
+                        CodigoGrupo: integer
+                        DescricaoGrupo: integer
+                        QuantidadeDePropostas: integer
+                    Convenio:
+                      Codigo: integer
+                      Descricao: string
+                    Produto:
+                      Codigo: integer
+                      Descricao: string
+                      TipoProduto: string
+                    FGTS:
+                      ValorFGTS: integer
+                      ValorGarantiaFGTS: integer
+                    TabelaFinanciamento:
+                      Codigo: integer
+                    Origens:
+                      Origem:
+                        - Tipo: string
+                          Codigo: integer
+                          Descricao: string
+                        - Tipo: string
+                          Codigo: integer
+                          Descricao: string
+                        - Tipo: string
+                          Codigo: integer
+                          Descricao: string
+                        - Tipo: string
+                          Codigo: integer
+                          Descricao: string
+                        - Tipo: string
+                          Codigo: integer
+                          Descricao: string
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-proposta-detalhada:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-simular-saldo
+
+      description: fgts simular saldo
+
+      requestBody:
+        $ref: "#/components/requestBodies/PropostaDetalhada"
+
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              example:
+                status: OK
+                dados:
+                  num_proposta: integer
+                  NumeroProposta: integer
+                  DataCadastro: date
+                  Convenio: string
+                  Produto: string
+                  DataBase: date
+                  ValorSolicitado: integer
+                  ValorPrincipal: integer
+                  ValorBruto: integer
+                  ValorIOF: integer
+                  ValorLiquido: integer
+                  ValorCliente: integer
+                  QuantidadeParcelas: integer
+                  ValorParcela: integer
+                  Data1Vencimento: date
+                  DataUltimoVencimento: date
+                  ValorTac: integer
+                  Parcelas:
+                    - .:
+                        NumeroParcela: integer
+                        ValorParcela: integer
+                        DataVencimentoParcela: date
+                  TaxaCETAM: integer
+                  CodigoBanco: integer
+                  Numeroagencia: integer
+                  NumeroConta: integer
+                  DigitoConta: integer
+                  CPF: integer
+                  NomeCliente: string
+                  TipoDoc: string
+                  NumDoc: string
+                  EstadoCivil: string
+                  DataNascimento: date
+                  NumMatricula: integer
+                  CEP: integer
+                  Rua: string
+                  Numero: integer
+                  Compl: string
+                  Bairro: string
+                  Cidade: string
+                  UF: string
+                  Tel_tipo: string
+                  Tel_ddd: integer
+                  Tel_num: integer
+                  Digitador: integer
+                  status: string
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-proposta-checklist:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-simular-saldo
+
+      description: fgts simular saldo
+
+      requestBody:
+        $ref: "#/components/requestBodies/Checklist"
+
+      responses:
+        "200":
+          description: A list of available checklists
+          content:
+            application/json:
+              example:
+                status: OK
+                obs:
+                  CheckLists:
+                    - Codigo: integer
+                      Descricao: string
+                      Tipo: string
+                      ItensCheckList:
+                        - Sequencial: integer
+                          Descricao: string
+                          Obrigatorio: true
+                          Tipo: string
+
+                  Extensoes:
+                    - Extensao: "JPG"
+                    - Extensao: "JPEG"
+                    - Extensao: "PNG"
+                    - Extensao: "BMP"
+                    - Extensao: "GIF"
+                    - Extensao: "PDF"
+                    - Extensao: "jpg"
+                    - Extensao: "jpeg"
+                    - Extensao: "png"
+                    - Extensao: "bmp"
+                    - Extensao: "gif"
+                    - Extensao: "pdf"
+                    - Extensao: "DOC"
+                    - Extensao: "doc"
+                  STATUS:
+                    CODIGO: "Sucesso"
+                    ERROS:
+                      ERRO: []
+                aviso: "Observacoes"
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-proposta-observacao:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-simular-saldo
+
+      description: fgts simular saldo
+
+      requestBody:
+        $ref: "#/components/requestBodies/Observacao"
+
+      responses:
+        "200":
+          description: Observação de uma proposta
+          content:
+            application/json:
+              example:
+                status: OK
+                obs:
+                  - Tipo: string
+                    Cabecalho: string
+                    TextosObservacao:
+                      - Texto: string
+                aviso: "Observacoes"
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                Status: Erro
+                Convenio: integer
+                convenioDescricao: string
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-incluir-proposta:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-incluir-proposta
+
+      description: fgts incluir Proposta
+
+      requestBody:
+        $ref: "#/components/requestBodies/Incluir"
+
+      responses:
+        "200":
+          description: Observação de uma proposta
+          content:
+            application/json:
+              example:
+                status: OK
+                obs:
+                  - NumeroProposta: string
+                    Link: string
+
+        "400":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: Erro
+                aviso: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+  /fgts-proposta-get-link:
+    post:
+      tags:
+        - FGTS
+      summary: fgts-proposta-get-link
+
+      description: fgts Proposta Get Link
+
+      requestBody:
+        $ref: "#/components/requestBodies/GetLink"
+
+      responses:
+        "200":
+          description: Observação de uma proposta
+          content:
+            application/json:
+              example:
+                status: OK
+                Link: string
+
+        "500":
+          description: Error
+          content:
+            application/json:
+              example:
+                status: ERR
+                message: string
+
+security:
+  - ApiKeyAuth: []
+
+components:
+  requestBodies:
+    SimularSaldo:
+      description: "JSON contendo informações da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SimularSaldoSchema"
+
+    Login:
+      description: "JSON contendo informações de Login"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/LoginSchema"
+
+    Checklist:
+      description: "JSON contendo informações da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ChecklistSchema"
+
+    Observacao:
+      description: "JSON contendo informações da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ObservacaoSchema"
+
+    Incluir:
+      description: "JSON contendo informações da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/IncluirSchema"
+
+    GetLink:
+      description: "JSON contendo informações da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetLinkSchema"
+
+    PropostaDetalhada:
+      description: "JSON contendo numero da proposta"
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PropostaDetalhadaSchema"
+
+  parameters:
+    ApiKeyParam:
+      in: header
+      name: "user"
+      description: "Usuario do sistema"
+      schema:
+        type: string
+
+    ApiKey:
+      in: header
+      name: "Token"
+      description: "Token"
+      schema:
+        type: string
+
+  schemas:
+    SimularSaldoSchema:
+      type: object
+      properties:
+        cpf:
+          type: string
+        dt_nasc:
+          type: string
+        vl_sol:
+          type: integer
+        tp_sim:
+          type: string
+          example: ValorSolicitado
+
+    PropostaDetalhadaSchema:
+      type: object
+      properties:
+        num_proposta:
+          type: integer
+
+    GetLinkSchema:
+      type: object
+      properties:
+        num_proposta:
+          type: integer
+
+    LoginSchema:
+      type: object
+      properties:
+        user:
+          type: integer
+        passwd:
+          type: string
+        tuere:
+          type: string
+
+    ChecklistSchema:
+      type: object
+      properties:
+        num_proposta:
+          type: integer
+        tipo_checklis:
+          type: string
+
+    IncluirSchema:
+      type: object
+      properties:
+        nome:
+          type: string
+        valor_renda:
+          type: integer
+        valor_renda_outro:
+          type: integer
+        cliente_ppe:
+          type: boolean
+          example: false
+        cliente_sem_contrato:
+          type: boolean
+          example: false
+        rg:
+          type: integer
+        rg_type:
+          type: string
+          example: RG
+        rg_uf:
+          type: string
+        rg_data:
+          type: string
+          example: 01/01/1970
+        rg_emissor:
+          type: string
+        nome_mae:
+          type: string
+        nome_pai:
+          type: string
+        dt_nasc:
+          format: date
+        sexo:
+          type: string
+        nacionalidade:
+          type: string
+        naturalidade:
+          type: string
+        estado_civil:
+          type: string
+        email:
+          type: string
+        end_rua:
+          type: string
+        end_num:
+          type: string
+        end_compl:
+          type: string
+        end_bairro:
+          type: string
+        end_cidade:
+          type: string
+        end_cep:
+          type: string
+        end_uf:
+          type: string
+        end_tipo:
+          type: string
+          example: Fisico
+        end_zona:
+          type: string
+        num_banco:
+          type: integer
+        agencia:
+          type: integer
+        conta:
+          type: integer
+        conta_dv:
+          type: integer
+        tipo_conta:
+          type: string
+        sim_id:
+          type: integer
+        cpf:
+          type: integer
+        tel_ddd:
+          type: string
+        tel_num:
+          type: string
+        tel_tipo:
+          type: string
+
+    ObservacaoSchema:
+      type: object
+      properties:
+        num_proposta:
+          type: integer
+        tipo_obs:
+          type: string
+
+    SuccessLog:
+      type: object
+      properties:
+        status:
+          type: string
+        token:
+          format: base64
+        validade_token:
+          type: string
+          format: date-time
+        convenios_disponiveis:
+          type: object
+          properties:
+            setup_id:
+              type: integer
+            descricao:
+              type: string
+      $ref: "#/components/schemas/SuccessLog"
+
+    ErrorLog:
+      type: object
+      properties:
+        token:
+          type: string
+        user_id:
+          type: integer
+        status:
+          type: string
+          example: "FORBIDDEN"
+      $ref: "#/components/schemas/ErrorLog"
+
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: api-key
+      in: header
